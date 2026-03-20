@@ -22,3 +22,11 @@ export interface TimelineItem {
   description: string;
   category: 'personal' | 'startup' | 'milestone';
 }
+
+declare global {
+  interface ImportMeta {
+    readonly env: {
+      readonly VITE_GEMINI_API_KEY: string;
+    };
+  }
+}

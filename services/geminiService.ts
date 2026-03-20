@@ -1,16 +1,19 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-const API_KEY = process.env.API_KEY || "";
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "";
 
 export const getAIVisionResponse = async (userPrompt: string) => {
-  if (!API_KEY) return "The AI Vision system is currently offline. Please check back later.";
+  if (!API_KEY) {
+    console.error("VITE_GEMINI_API_KEY is missing in environment variables.");
+    return "The AI Vision system is currently offline. Please check back later.";
+  }
 
   try {
-    const ai = new GoogleGenAI({ apiKey: API_KEY });
-    const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
-      contents: `You are the AI digital persona of Uma Krishna Kanth Chokkapu (UKK). 
+    const genAI = new GoogleGenAI({ apiKey: API_KEY });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const prompt = `You are the AI digital persona of Uma Krishna Kanth Chokkapu (UKK). 
       
       About UKK:
       - B.Tech CSE student at JNTU Kakinada (2024-Present).
@@ -25,14 +28,13 @@ export const getAIVisionResponse = async (userPrompt: string) => {
       Be futuristic, bold, confident, and professional. 
       Keep responses concise and impactful.
       
-      User asks: ${userPrompt}`,
-      config: {
-        temperature: 0.8,
-        topP: 0.9,
-      },
-    });
+      User asks: ${userPrompt}`;
 
-    return response.text || "I am processing the future. Please wait.";
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    return text || "I am processing the future. Please wait.";
   } catch (error) {
     console.error("Gemini Error:", error);
     return "Error communicating with the neural network. Please retry.";

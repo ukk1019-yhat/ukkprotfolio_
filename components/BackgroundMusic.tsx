@@ -22,8 +22,8 @@ const BackgroundMusic: React.FC = () => {
   const [currentSourceIndex, setCurrentSourceIndex] = useState(0);
 
   const sources = [
-    "https://ncs.io/track/download/68f38b96-f694-4b11-b3c1-b72be169029f",
-    "https://cdn.pixabay.com/audio/2022/03/15/audio_78390a5c6a.mp3" // Fallback
+    "https://cdn.pixabay.com/audio/2022/03/15/audio_78390a5c6a.mp3", // Stable Pixabay link
+    "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" // Fallback
   ];
 
   const playCurrentSource = async (index: number) => {
@@ -98,23 +98,27 @@ const BackgroundMusic: React.FC = () => {
 
   useEffect(() => {
     const handleFirstInteraction = () => {
-      if (!hasInteracted && !isMuted && !isPlaying && !isLoading) {
+      if (!isMuted && !isPlaying && !isLoading) {
         playCurrentSource(currentSourceIndex);
       }
     };
 
-    if (!hasInteracted || !isMuted) {
+    // Mobile devices require a direct user interaction to play audio. 
+    // We listen to touchstart and click to ensure the widest compatibility.
+    if (!isMuted) {
       window.addEventListener('click', handleFirstInteraction, { once: true });
+      window.addEventListener('touchstart', handleFirstInteraction, { once: true });
       window.addEventListener('scroll', handleFirstInteraction, { once: true });
       window.addEventListener('keydown', handleFirstInteraction, { once: true });
     }
 
     return () => {
       window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('touchstart', handleFirstInteraction);
       window.removeEventListener('scroll', handleFirstInteraction);
       window.removeEventListener('keydown', handleFirstInteraction);
     };
-  }, [hasInteracted, isMuted, isPlaying, isLoading, currentSourceIndex]);
+  }, [isMuted, isPlaying, isLoading, currentSourceIndex]);
 
   useEffect(() => {
     if (audioRef.current) {

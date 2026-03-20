@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 import ParticleBackground from './components/ParticleBackground';
-import AIChat from './components/AIChat';
 import BackgroundMusic from './components/BackgroundMusic';
+import RobotMascot from './components/RobotMascot';
 import {
   Menu,
   Github,
@@ -69,8 +69,8 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen relative overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
       <ParticleBackground />
-      <AIChat />
       <BackgroundMusic />
+      <RobotMascot />
 
       {/* Progress Bar */}
       <motion.div
