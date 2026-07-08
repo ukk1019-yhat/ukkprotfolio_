@@ -102,7 +102,7 @@ export const PROJECTS: Project[] = [
     description:
       'SaaS alternative education platform with Razorpay payment integration, AI assistant, and SEO-optimized landing pages. Built with React, TypeScript, and Firebase.',
     tags: ['EdTech', 'React', 'Firebase', 'Razorpay'],
-    link: 'https://www.edualtech.xyz/',
+    link: 'https://www.edualttech.com/',
     github: 'https://github.com/ukk1019-yhat/Edu-Alt-Tech-website',
     language: 'TypeScript',
   },
